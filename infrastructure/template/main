@@ -1,0 +1,20 @@
+resource "aws_ssm_parameter" "smtp_user_id" {
+  name        = "{ssm_parameter_user}"
+  description = "Smtp user"
+  type        = "SecureString"
+  value       = aws_iam_access_key.smtp_{date}.id
+}
+
+resource "aws_ssm_parameter" "smtp_password" {
+  name        = "{ssm_parameter_password}"
+  description = "Smtp password"
+  type        = "SecureString"
+  value       = aws_iam_access_key.smtp_{date}.ses_smtp_password_v4
+}
+
+resource "aws_ssm_parameter" "smtp" {
+  name        = "{ssm_parameter_ses}"
+  description = "Email service credentials (SMTP)"
+  type        = "SecureString"
+  value       = "{\n    \"host\":\"email-smtp.us-east-1.amazonaws.com\",\n    \"port\": 587,\n    \"username\":\"${aws_iam_access_key.smtp_{date}.id}\",\n    \"password\":\"${aws_iam_access_key.smtp_{date}.ses_smtp_password_v4}\"\n}"
+}
